@@ -5,5 +5,3 @@
 [build.environment]
   PRISMA_TELEMETRY_INFORMATION = "false"
 
-[functions]
-  node_bundler = "esbuild"
