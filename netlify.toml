@@ -1,7 +1,9 @@
 [build]
   command = "npm run build"
   publish = ".next"
-  environment = { PRISMA_TELEMETRY_INFORMATION = "false" }
+
+[build.environment]
+  PRISMA_TELEMETRY_INFORMATION = "false"
 
 [functions]
   node_bundler = "esbuild"
