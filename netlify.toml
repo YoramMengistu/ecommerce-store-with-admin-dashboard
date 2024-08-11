@@ -7,4 +7,6 @@
   NODE_ENV = "production"
   # Disable caching for Prisma
   PRISMA_DISABLE_CACHE = "true"
+  NODE_VERSION = "21.7.3"
+
 
