@@ -1,16 +1,10 @@
 [build]
-  command = "next build"
+  command = "npm run build"
   publish = ".next"
+  cache = false
 
-[[redirects]]
-  from = "/_next/image/*"
-  query = { q = ":quality", url = ":url", w = ":width" }
-  to = "/.netlify/images?url=:url&w=:width&q=:quality"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+[build.environment]
+  NODE_ENV = "production"
+  # Disable caching for Prisma
+  PRISMA_DISABLE_CACHE = "true"
 
