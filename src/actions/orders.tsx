@@ -46,20 +46,59 @@ export async function emailOrderHistory(
         "Check your email to view your order history and download your products.",
     };
   }
+  const orders = user.orders.map(
+    async (order: {
+      id: string;
+      createdAt: Date;
+      pricePaidInCents: number;
+      product: {
+        id: string;
+        name: string;
+        imagePath: string;
+        description: string;
+      };
+    }) => {
+      return {
+        ...order,
+        downloadVerificationId: (
+          await db.downloadVerification.create({
+            data: {
+              expiresAt: new Date(Date.now() + 24 * 1000 * 60 * 60),
+              productId: order.product.id,
+            },
+          })
+        ).id,
+      };
+    }
+  );
 
-  const orders = user.orders.map(async (order) => {
-    return {
-      ...order,
-      downloadVerificationId: (
-        await db.downloadVerification.create({
-          data: {
-            expiresAt: new Date(Date.now() + 24 * 1000 * 60 * 60),
-            productId: order.product.id,
-          },
-        })
-      ).id,
-    };
-  });
+  // const orders = user.orders.map(async (order: OrderType) => {
+  //   return {
+  //     ...order,
+  //     downloadVerificationId: (
+  //       await db.downloadVerification.create({
+  //         data: {
+  //           expiresAt: new Date(Date.now() + 24 * 1000 * 60 * 60),
+  //           productId: order.product.id,
+  //         },
+  //       })
+  //     ).id,
+  //   };
+  // });
+
+  // const orders = user.orders.map(async (order) => {
+  //   return {
+  //     ...order,
+  //     downloadVerificationId: (
+  //       await db.downloadVerification.create({
+  //         data: {
+  //           expiresAt: new Date(Date.now() + 24 * 1000 * 60 * 60),
+  //           productId: order.product.id,
+  //         },
+  //       })
+  //     ).id,
+  //   };
+  // });
 
   const data = await resend.emails.send({
     from: `Support <${process.env.SENDER_EMAIL}>`,
